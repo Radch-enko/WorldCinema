@@ -3,13 +3,10 @@ package stanislav.radchenko.worldcinema.screens.registration
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.coroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import stanislav.radchenko.worldcinema.domain.repository.AuthorizationRepository
 import stanislav.radchenko.worldcinema.network.ResultWrapper
-import stanislav.radchenko.worldcinema.ui.DialogState
 import stanislav.radchenko.worldcinema.ui.utils.AuthorizationValidator
 
 class RegistrationScreenViewModel(private val authorizationRepository: AuthorizationRepository) :
@@ -28,12 +25,9 @@ class RegistrationScreenViewModel(private val authorizationRepository: Authoriza
 
     sealed class Effect {
         object ToLogin : Effect()
-        object ShowError : Effect()
+        class ShowError(val message: String) : Effect()
         object SuccessfullyRegistration : Effect()
     }
-
-    private val mutableDialogState = MutableStateFlow<DialogState>(DialogState(""))
-    val dialog = mutableDialogState.asStateFlow()
 
     private val mutableEffect = MutableSharedFlow<Effect>()
     val effect = mutableEffect.asSharedFlow()
@@ -66,12 +60,12 @@ class RegistrationScreenViewModel(private val authorizationRepository: Authoriza
             when (val response =
                 authorizationRepository.register(email, password, firstName, lastName)) {
                 is ResultWrapper.GenericError -> {
-                    mutableDialogState.value = DialogState("Something went wrong")
-                    mutableEffect.emit(Effect.ShowError)
+                    if (response.error != null) {
+                        mutableEffect.emit(Effect.ShowError(response.error.message))
+                    }
                 }
                 ResultWrapper.NetworkError -> {
-                    mutableDialogState.value = DialogState("Network error, please try again")
-                    mutableEffect.emit(Effect.ShowError)
+                    mutableEffect.emit(Effect.ShowError("Network error, please try again"))
                 }
                 is ResultWrapper.Success -> {
                     mutableEffect.emit(Effect.SuccessfullyRegistration)
@@ -79,8 +73,7 @@ class RegistrationScreenViewModel(private val authorizationRepository: Authoriza
                 }
             }
         } else {
-            mutableDialogState.value = DialogState(validateErrorString)
-            mutableEffect.emit(Effect.ShowError)
+            mutableEffect.emit(Effect.ShowError(validateErrorString))
         }
     }
 }

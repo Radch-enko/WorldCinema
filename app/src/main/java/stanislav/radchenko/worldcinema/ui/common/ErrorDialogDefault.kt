@@ -13,34 +13,37 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import stanislav.radchenko.worldcinema.R
+import stanislav.radchenko.worldcinema.ui.DialogState
 import stanislav.radchenko.worldcinema.ui.theme.Mercury
 
 @Composable
 fun ErrorDialogDefault(
-    message: String,
+    state: DialogState,
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
     onOkClick: () -> Unit
 ) {
-    AlertDialog(
-        onDismissRequest = onDismissRequest, buttons = {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(15.dp),
-                horizontalArrangement = Arrangement.End
-            ) {
-                Button(onClick = onOkClick) {
-                    Text(stringResource(id = R.string.ok))
+    if (state.isVisible) {
+        AlertDialog(
+            onDismissRequest = onDismissRequest, buttons = {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(15.dp),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    Button(onClick = onOkClick) {
+                        Text(stringResource(id = R.string.ok))
+                    }
                 }
-            }
-        },
-        title = {
-            Text(
-                text = message,
-                color = Mercury,
-                style = typography.h6
-            )
-        }, modifier = modifier.padding(16.dp)
-    )
+            },
+            title = {
+                Text(
+                    text = state.message,
+                    color = Mercury,
+                    style = typography.h6
+                )
+            }, modifier = modifier.padding(16.dp)
+        )
+    }
 }

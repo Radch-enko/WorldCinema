@@ -21,12 +21,12 @@ suspend fun <T> safeApiCall(
                 is IOException -> ResultWrapper.NetworkError
                 is HttpException -> {
                     val code = throwable.code()
-                    val errorResponse = convertErrorBody(throwable)
-                    ResultWrapper.GenericError(code, errorResponse)
+                    val errorResponse = convertErrorBodyFromString(throwable)
+                    ResultWrapper.GenericError(code, ErrorResponse(errorResponse.orEmpty()))
                 }
                 else -> {
                     Log.e("SafeApiCall", throwable.printStackTrace().toString())
-                    ResultWrapper.GenericError(null, null)
+                    ResultWrapper.GenericError()
                 }
             }
         }
@@ -45,6 +45,24 @@ private fun convertErrorBody(throwable: HttpException): ErrorResponse? {
                 strFileContents += String(contents, 0, bytesRead)
             }
             return Json.decodeFromString<ErrorResponse>(strFileContents.orEmpty())
+        }
+    } catch (exception: Exception) {
+        null
+    }
+}
+
+private fun convertErrorBodyFromString(throwable: HttpException): String? {
+    return try {
+        throwable.response()?.errorBody()?.source()?.let {
+            val inputStream = BufferedInputStream(it.inputStream())
+            val contents = ByteArray(1024)
+
+            var bytesRead = 0
+            var strFileContents: String? = null
+            while (inputStream.read(contents).also { bytesRead = it } != -1) {
+                strFileContents += String(contents, 0, bytesRead)
+            }
+            return strFileContents?.substring(4)
         }
     } catch (exception: Exception) {
         null

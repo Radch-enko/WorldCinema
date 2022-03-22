@@ -1,5 +1,3 @@
 package stanislav.radchenko.worldcinema.network
 
-class ErrorResponse {
-
-}
+class ErrorResponse(val message: String)

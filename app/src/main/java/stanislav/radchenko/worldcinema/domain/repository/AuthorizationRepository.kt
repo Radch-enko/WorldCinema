@@ -11,4 +11,9 @@ interface AuthorizationRepository {
         firstName: String,
         lastName: String
     ): ResultWrapper<ResponseBody>
+
+    suspend fun login(
+        email: String,
+        password: String
+    ): ResultWrapper<ResponseBody>
 }

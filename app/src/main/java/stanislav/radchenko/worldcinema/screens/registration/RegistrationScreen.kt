@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -22,9 +21,10 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
+import org.koin.androidx.compose.getViewModel
 import stanislav.radchenko.worldcinema.R
+import stanislav.radchenko.worldcinema.activity.authorization.AuthorizationActivityViewModel
 import stanislav.radchenko.worldcinema.ui.common.ButtonDefault
-import stanislav.radchenko.worldcinema.ui.common.ErrorDialogDefault
 import stanislav.radchenko.worldcinema.ui.common.Logo
 import stanislav.radchenko.worldcinema.ui.common.OutlinedButtonDefault
 import stanislav.radchenko.worldcinema.ui.common.TextFieldDefault
@@ -34,18 +34,16 @@ class RegistrationScreen : Screen {
     override fun Content() {
         val viewModel = getScreenModel<RegistrationScreenViewModel>()
         val navigator = LocalNavigator.current
-        var errorDialogVisibility by remember {
-            mutableStateOf(false)
-        }
-        val dialogState by viewModel.dialog.collectAsState()
+
         val context = LocalContext.current
+        val authorizationViewModel = getViewModel<AuthorizationActivityViewModel>()
 
         LaunchedEffect(viewModel.effect) {
             viewModel.effect.collect { effect ->
                 when (effect) {
                     RegistrationScreenViewModel.Effect.ToLogin -> navigator?.pop()
                     is RegistrationScreenViewModel.Effect.ShowError -> {
-                        errorDialogVisibility = true
+                        authorizationViewModel.showDialog(effect.message)
                     }
                     RegistrationScreenViewModel.Effect.SuccessfullyRegistration -> {
                         Toast.makeText(
@@ -59,13 +57,6 @@ class RegistrationScreen : Screen {
         }
 
         RegistrationScreenInner(viewModel)
-
-        if (errorDialogVisibility) {
-            ErrorDialogDefault(
-                dialogState.message,
-                onDismissRequest = { errorDialogVisibility = false },
-                onOkClick = { errorDialogVisibility = false })
-        }
     }
 
     @Composable
