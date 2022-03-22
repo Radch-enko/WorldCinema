@@ -1,0 +1,42 @@
+package stanislav.radchenko.worldcinema.ui.common
+
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Text
+import androidx.compose.material.TextFieldDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
+import stanislav.radchenko.worldcinema.ui.theme.Mercury
+
+@Composable
+fun TextFieldDefault(
+    value: String,
+    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    placeHolderText: String
+) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        modifier = Modifier
+            .fillMaxWidth()
+            .composed { modifier },
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            backgroundColor = Color.Transparent,
+            unfocusedBorderColor = Mercury,
+            textColor = Mercury
+        ),
+        placeholder = {
+            Text(text = placeHolderText, color = Mercury)
+        }
+    )
+}
+
+@Preview
+@Composable
+fun TextFieldDefaultPreview() {
+    TextFieldDefault("Test text", {}, placeHolderText = "Test Placeholder")
+}

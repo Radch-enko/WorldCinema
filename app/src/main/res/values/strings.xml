@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">WorldCinema</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="registration">Registration</string>
+    <string name="already_have_account">I already have account</string>
+    <string name="name">Name</string>
+    <string name="surname">Surname</string>
+    <string name="thirdname">Thirdname</string>
+    <string name="password_again">Password again</string>
 </resources>
