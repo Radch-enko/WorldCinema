@@ -9,4 +9,7 @@
     <string name="surname">Surname</string>
     <string name="thirdname">Thirdname</string>
     <string name="password_again">Password again</string>
+    <string name="ok">OK</string>
+    <string name="unknown_error">Something went wrong, please try again later</string>
+    <string name="successfully">Successfully</string>
 </resources>

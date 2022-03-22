@@ -17,7 +17,7 @@ object RetrofitBuilder {
 
     private val json = Json { ignoreUnknownKeys = true }
 
-    fun getOkHttpClient(): OkHttpClient {
+    private fun getOkHttpClient(): OkHttpClient {
         val httpLoggingInterceptor = HttpLoggingInterceptor()
         httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
 
