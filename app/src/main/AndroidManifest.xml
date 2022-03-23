@@ -14,12 +14,6 @@
         android:theme="@style/Theme.WorldCinema"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".activity.authorization.AuthorizationActivity"
-            android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.WorldCinema"></activity>
-
-        <activity
             android:name=".activity.main.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
