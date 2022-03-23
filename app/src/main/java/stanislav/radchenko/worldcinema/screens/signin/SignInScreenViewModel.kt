@@ -9,7 +9,10 @@ import stanislav.radchenko.worldcinema.domain.repository.AuthorizationRepository
 import stanislav.radchenko.worldcinema.network.ResultWrapper
 import stanislav.radchenko.worldcinema.ui.utils.AuthorizationValidator
 
-class SignInScreenViewModel(private val authenticationRepository: AuthorizationRepository) :
+class SignInScreenViewModel(
+    private val authenticationRepository: AuthorizationRepository,
+    private val authorizationTokenUseCase: AuthorizationTokenUseCase
+) :
     ScreenModel {
     sealed class Action {
         object ToRegistration : Action()
@@ -19,6 +22,7 @@ class SignInScreenViewModel(private val authenticationRepository: AuthorizationR
     sealed class Effect {
         class ShowError(val message: String) : Effect()
         object NavigateToRegistration : Effect()
+        object OpenMainScreen : Effect()
     }
 
     private val mutableEffect = MutableSharedFlow<Effect>()
@@ -47,6 +51,8 @@ class SignInScreenViewModel(private val authenticationRepository: AuthorizationR
                     mutableEffect.emit(Effect.ShowError("Network error, please try again"))
                 }
                 is ResultWrapper.Success -> {
+                    authorizationTokenUseCase.saveToken(response.value.token)
+                    mutableEffect.emit(Effect.OpenMainScreen)
                 }
             }
         } else {

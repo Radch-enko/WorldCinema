@@ -8,10 +8,11 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import stanislav.radchenko.worldcinema.BuildConfig
+import stanislav.radchenko.worldcinema.screens.signin.AuthorizationTokenUseCase
 
 
 @OptIn(ExperimentalSerializationApi::class)
-object RetrofitBuilder {
+class RetrofitBuilder(private val authorizationTokenUseCase: AuthorizationTokenUseCase) {
 
     private val contentType = "application/json".toMediaType()
 
@@ -23,6 +24,12 @@ object RetrofitBuilder {
 
         return OkHttpClient.Builder()
             .addInterceptor(httpLoggingInterceptor)
+            .addInterceptor { chain ->
+                val newRequest = chain.request().newBuilder()
+                    .addHeader("Authorization", "Bearer ${authorizationTokenUseCase.getToken()}")
+                    .build()
+                chain.proceed(newRequest)
+            }
             .build()
     }
 

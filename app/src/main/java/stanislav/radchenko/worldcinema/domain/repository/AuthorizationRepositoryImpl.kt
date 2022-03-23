@@ -6,6 +6,7 @@ import stanislav.radchenko.worldcinema.network.ResultWrapper
 import stanislav.radchenko.worldcinema.network.WorldCinemaService
 import stanislav.radchenko.worldcinema.network.model.LoginBody
 import stanislav.radchenko.worldcinema.network.model.body.RegistrationBody
+import stanislav.radchenko.worldcinema.network.model.response.AuthorizationResponse
 import stanislav.radchenko.worldcinema.network.safeApiCall
 
 class AuthorizationRepositoryImpl(
@@ -25,7 +26,10 @@ class AuthorizationRepositoryImpl(
         })
     }
 
-    override suspend fun login(email: String, password: String): ResultWrapper<ResponseBody> {
+    override suspend fun login(
+        email: String,
+        password: String
+    ): ResultWrapper<AuthorizationResponse> {
         return safeApiCall(dispatcher, apiCall = {
             service.login(LoginBody(email, password))
         })

@@ -2,6 +2,7 @@ package stanislav.radchenko.worldcinema.domain.repository
 
 import okhttp3.ResponseBody
 import stanislav.radchenko.worldcinema.network.ResultWrapper
+import stanislav.radchenko.worldcinema.network.model.response.AuthorizationResponse
 
 interface AuthorizationRepository {
 
@@ -15,5 +16,5 @@ interface AuthorizationRepository {
     suspend fun login(
         email: String,
         password: String
-    ): ResultWrapper<ResponseBody>
+    ): ResultWrapper<AuthorizationResponse>
 }

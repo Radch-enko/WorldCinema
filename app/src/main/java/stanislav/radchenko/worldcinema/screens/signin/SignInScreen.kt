@@ -21,7 +21,8 @@ import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import org.koin.androidx.compose.getViewModel
 import stanislav.radchenko.worldcinema.R
-import stanislav.radchenko.worldcinema.activity.authorization.AuthorizationActivityViewModel
+import stanislav.radchenko.worldcinema.activity.main.MainActivityViewModel
+import stanislav.radchenko.worldcinema.screens.main.MainScreen
 import stanislav.radchenko.worldcinema.screens.registration.RegistrationScreen
 import stanislav.radchenko.worldcinema.ui.common.ButtonDefault
 import stanislav.radchenko.worldcinema.ui.common.Logo
@@ -34,7 +35,7 @@ class SignInScreen : Screen {
 
         val viewModel = getScreenModel<SignInScreenViewModel>()
         val navigator = LocalNavigator.current
-        val authorizationViewModel = getViewModel<AuthorizationActivityViewModel>()
+        val parentViewModel = getViewModel<MainActivityViewModel>()
 
         LaunchedEffect(viewModel.effect) {
             viewModel.effect.collect { effect ->
@@ -43,7 +44,10 @@ class SignInScreen : Screen {
                         navigator?.push(RegistrationScreen())
                     }
                     is SignInScreenViewModel.Effect.ShowError -> {
-                        authorizationViewModel.showDialog(effect.message)
+                        parentViewModel.showDialog(effect.message)
+                    }
+                    SignInScreenViewModel.Effect.OpenMainScreen -> {
+                        navigator?.replace(MainScreen())
                     }
                 }
             }

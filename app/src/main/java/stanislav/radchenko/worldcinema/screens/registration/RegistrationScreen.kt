@@ -23,7 +23,7 @@ import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import org.koin.androidx.compose.getViewModel
 import stanislav.radchenko.worldcinema.R
-import stanislav.radchenko.worldcinema.activity.authorization.AuthorizationActivityViewModel
+import stanislav.radchenko.worldcinema.activity.main.MainActivityViewModel
 import stanislav.radchenko.worldcinema.ui.common.ButtonDefault
 import stanislav.radchenko.worldcinema.ui.common.Logo
 import stanislav.radchenko.worldcinema.ui.common.OutlinedButtonDefault
@@ -36,14 +36,14 @@ class RegistrationScreen : Screen {
         val navigator = LocalNavigator.current
 
         val context = LocalContext.current
-        val authorizationViewModel = getViewModel<AuthorizationActivityViewModel>()
+        val parentViewModel = getViewModel<MainActivityViewModel>()
 
         LaunchedEffect(viewModel.effect) {
             viewModel.effect.collect { effect ->
                 when (effect) {
                     RegistrationScreenViewModel.Effect.ToLogin -> navigator?.pop()
                     is RegistrationScreenViewModel.Effect.ShowError -> {
-                        authorizationViewModel.showDialog(effect.message)
+                        parentViewModel.showDialog(effect.message)
                     }
                     RegistrationScreenViewModel.Effect.SuccessfullyRegistration -> {
                         Toast.makeText(

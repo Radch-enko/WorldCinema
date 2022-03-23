@@ -7,6 +7,6 @@ import stanislav.radchenko.worldcinema.network.RetrofitBuilder
 import stanislav.radchenko.worldcinema.network.WorldCinemaService
 
 val networkModule = module {
-    single<WorldCinemaService> { RetrofitBuilder.apiService }
+    single<WorldCinemaService> { RetrofitBuilder(get()).apiService }
     single<CoroutineDispatcher> { Dispatchers.Default }
 }
