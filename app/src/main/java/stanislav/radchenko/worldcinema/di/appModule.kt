@@ -1,8 +1,9 @@
 package stanislav.radchenko.worldcinema.di
 
 import org.koin.dsl.module
-import stanislav.radchenko.worldcinema.network.di.networkModule
+import org.koin.dsl.single
+import stanislav.radchenko.worldcinema.screens.signin.AuthorizationTokenUseCase
 
 val appModule = module {
-    networkModule
+    single<AuthorizationTokenUseCase>()
 }
