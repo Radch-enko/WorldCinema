@@ -1,6 +1,6 @@
 package stanislav.radchenko.worldcinema.screens.signin
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -58,50 +58,48 @@ class SignInScreen : Screen {
 
     @Composable
     fun SigninScreenInner(viewModel: SignInScreenViewModel) {
-        Box(modifier = Modifier.fillMaxSize()) {
+        var email by remember {
+            mutableStateOf("")
+        }
+        var password by remember {
+            mutableStateOf("")
+        }
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxSize()
+        ) {
             Logo(
                 Modifier
-                    .align(Alignment.TopCenter)
                     .padding(top = 50.dp)
             )
 
+            TextFieldDefault(value = email, onValueChange = {
+                email = it
+            }, placeHolderText = stringResource(id = R.string.email))
 
-            var email by remember {
-                mutableStateOf("")
-            }
-            var password by remember {
-                mutableStateOf("")
-            }
-            Column(modifier = Modifier.align(Alignment.Center)) {
-                TextFieldDefault(value = email, onValueChange = {
-                    email = it
-                }, placeHolderText = stringResource(id = R.string.email))
+            Spacer(modifier = Modifier.height(16.dp))
 
-                Spacer(modifier = Modifier.height(16.dp))
+            TextFieldDefault(value = password, onValueChange = {
+                password = it
+            }, placeHolderText = stringResource(id = R.string.password))
 
-                TextFieldDefault(value = password, onValueChange = {
-                    password = it
-                }, placeHolderText = stringResource(id = R.string.password))
-            }
-
-            Column(modifier = Modifier.align(Alignment.BottomCenter)) {
-                ButtonDefault(onClick = {
-                    viewModel.sendAction(
-                        SignInScreenViewModel.Action.Login(
-                            email,
-                            password
-                        )
+            ButtonDefault(onClick = {
+                viewModel.sendAction(
+                    SignInScreenViewModel.Action.Login(
+                        email,
+                        password
                     )
-                }, text = stringResource(id = R.string.login))
-                Spacer(modifier = Modifier.height(16.dp))
-
-                OutlinedButtonDefault(
-                    onClick = {
-                        viewModel.sendAction(SignInScreenViewModel.Action.ToRegistration)
-                    },
-                    text = stringResource(id = R.string.registration)
                 )
-            }
+            }, text = stringResource(id = R.string.login))
+            Spacer(modifier = Modifier.height(16.dp))
+
+            OutlinedButtonDefault(
+                onClick = {
+                    viewModel.sendAction(SignInScreenViewModel.Action.ToRegistration)
+                },
+                text = stringResource(id = R.string.registration)
+            )
         }
     }
 }

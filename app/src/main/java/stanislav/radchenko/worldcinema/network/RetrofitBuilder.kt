@@ -16,7 +16,10 @@ class RetrofitBuilder(private val authorizationTokenUseCase: AuthorizationTokenU
 
     private val contentType = "application/json".toMediaType()
 
-    private val json = Json { ignoreUnknownKeys = true }
+    private val json = Json {
+        ignoreUnknownKeys = true
+        isLenient = true
+    }
 
     private fun getOkHttpClient(): OkHttpClient {
         val httpLoggingInterceptor = HttpLoggingInterceptor()
