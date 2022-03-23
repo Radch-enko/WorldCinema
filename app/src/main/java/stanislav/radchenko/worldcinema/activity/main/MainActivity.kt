@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.Navigator
 import org.koin.androidx.viewmodel.ext.android.getViewModel
-import stanislav.radchenko.worldcinema.screens.main.MainScreen
+import stanislav.radchenko.worldcinema.navigation.BottomNavigation
 import stanislav.radchenko.worldcinema.screens.splash.SplashStartScreen
 import stanislav.radchenko.worldcinema.ui.common.ErrorDialogDefault
 import stanislav.radchenko.worldcinema.ui.theme.WorldCinemaTheme
@@ -44,7 +44,7 @@ class MainActivity : ComponentActivity() {
                             modifier = Modifier
                                 .fillMaxSize()
                         ) {
-                            Navigator(MainScreen())
+                            BottomNavigation()
                         }
                     }
                 }
