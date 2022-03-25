@@ -1,4 +1,4 @@
-package stanislav.radchenko.worldcinema.screens.main
+package stanislav.radchenko.worldcinema.screens.home
 
 import stanislav.radchenko.worldcinema.network.model.response.MoviesResponseItem
 

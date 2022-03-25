@@ -22,7 +22,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import org.koin.androidx.compose.getViewModel
 import stanislav.radchenko.worldcinema.R
 import stanislav.radchenko.worldcinema.activity.main.MainActivityViewModel
-import stanislav.radchenko.worldcinema.screens.main.MainScreen
+import stanislav.radchenko.worldcinema.screens.home.HomeScreen
 import stanislav.radchenko.worldcinema.screens.registration.RegistrationScreen
 import stanislav.radchenko.worldcinema.ui.common.ButtonDefault
 import stanislav.radchenko.worldcinema.ui.common.Logo
@@ -47,7 +47,7 @@ class SignInScreen : Screen {
                         parentViewModel.showDialog(effect.message)
                     }
                     SignInScreenViewModel.Effect.OpenMainScreen -> {
-                        navigator?.replace(MainScreen())
+                        navigator?.replace(HomeScreen())
                     }
                 }
             }
