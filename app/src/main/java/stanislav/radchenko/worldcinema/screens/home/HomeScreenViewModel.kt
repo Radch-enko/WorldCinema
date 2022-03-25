@@ -1,4 +1,4 @@
-package stanislav.radchenko.worldcinema.screens.main
+package stanislav.radchenko.worldcinema.screens.home
 
 import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.coroutineScope
@@ -6,8 +6,8 @@ import kotlinx.coroutines.launch
 import stanislav.radchenko.worldcinema.domain.repository.MoviesRepository
 import stanislav.radchenko.worldcinema.network.ResultWrapper
 
-class MainScreenViewModel(private val moviesRepository: MoviesRepository) :
-    StateScreenModel<MainScreenViewModel.State>(State.Loading) {
+class HomeScreenViewModel(private val moviesRepository: MoviesRepository) :
+    StateScreenModel<HomeScreenViewModel.State>(State.Loading) {
 
     sealed class State {
         object Loading : State()

@@ -10,7 +10,7 @@ import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import stanislav.radchenko.worldcinema.R
-import stanislav.radchenko.worldcinema.screens.main.MainScreen
+import stanislav.radchenko.worldcinema.screens.home.HomeScreen
 
 object HomeTab : Tab {
 
@@ -31,6 +31,6 @@ object HomeTab : Tab {
 
     @Composable
     override fun Content() {
-        Navigator(screen = MainScreen())
+        Navigator(screen = HomeScreen())
     }
 }
