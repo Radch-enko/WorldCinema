@@ -25,6 +25,9 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import coil.compose.AsyncImage
+import com.google.accompanist.placeholder.PlaceholderHighlight
+import com.google.accompanist.placeholder.material.placeholder
+import com.google.accompanist.placeholder.material.shimmer
 import stanislav.radchenko.worldcinema.ui.common.imagerequests.DefaultImageLoader
 
 class HomeScreen : Screen {
@@ -35,13 +38,21 @@ class HomeScreen : Screen {
 
         when (state) {
             is HomeScreenViewModel.State.Error -> TODO()
-            HomeScreenViewModel.State.Loading -> {}
-            is HomeScreenViewModel.State.MovieCover -> SwipeContainer((state as HomeScreenViewModel.State.MovieCover).movies)
+            HomeScreenViewModel.State.Loading -> SwipeContainer(
+                movies = listOf(
+                    MovieUI("Placeholder text", "")
+                ),
+                true
+            )
+            is HomeScreenViewModel.State.MovieCover -> SwipeContainer(
+                (state as HomeScreenViewModel.State.MovieCover).movies,
+                false
+            )
         }
     }
 
     @Composable
-    fun SwipeContainer(movies: List<MovieUI>) {
+    fun SwipeContainer(movies: List<MovieUI>, isPlaceholderVisible: Boolean) {
         val configuration = LocalConfiguration.current
         val screenWidth = configuration.screenWidthDp.dp
         LazyRow(
@@ -53,28 +64,40 @@ class HomeScreen : Screen {
                         .width(screenWidth)
                         .fillMaxHeight()
                 ) {
-                    MovieCover(movie)
+                    MovieCover(movie, isPlaceholderVisible)
                 }
             }
         }
     }
 
     @Composable
-    fun MovieCover(movie: MovieUI) {
+    fun MovieCover(movie: MovieUI, isPlaceholderVisible: Boolean) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(vertical = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text(movie.title, style = typography.h4, textAlign = TextAlign.Center)
+            Text(
+                movie.title,
+                style = typography.h4,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.placeholder(
+                    isPlaceholderVisible,
+                    highlight = PlaceholderHighlight.shimmer(),
+                )
+            )
             AsyncImage(
                 model = DefaultImageLoader.load(movie.imageUrl, LocalContext.current),
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxSize(0.9f)
                     .padding(16.dp)
-                    .clip(RoundedCornerShape(16.dp)),
+                    .clip(RoundedCornerShape(16.dp))
+                    .placeholder(
+                        isPlaceholderVisible,
+                        highlight = PlaceholderHighlight.shimmer(),
+                    ),
                 contentScale = ContentScale.Crop,
                 alignment = Alignment.Center
             )
