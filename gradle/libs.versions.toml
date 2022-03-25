@@ -45,10 +45,11 @@ coil = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 accompanist-system-ui-controller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
 accompanist-insets = { module = "com.google.accompanist:accompanist-insets", version.ref = "accompanist" }
 accompanist-insets-ui = { module = "com.google.accompanist:accompanist-insets-ui", version.ref = "accompanist" }
+accompanist-placeholders = { module = "com.google.accompanist:accompanist-placeholder-material", version.ref = "accompanist" }
 
 [bundles]
 compose = ["androidx-compose-ui", "androidx-compose-ui-tooling", "androidx-compose-foundation", "androidx-compose-material", "androidx-compose-animation", "androidx-compose-activity"]
 koin = ["koin-core", "koin-android", "koin-compose", "koin-navgraph"]
 voyager = ["voyager-navigator", "voyager-tab-navigator", "voyager-androidx", "voyager-transitions", "voyager-koin"]
 restapi = ["retrofit", "okhttp-client", "okhttp-logging", "coroutines", "kotlinx-serialization", "serialization-converter"]
-accompanist = ["accompanist-system-ui-controller", "accompanist-insets", "accompanist-insets-ui"]
+accompanist = ["accompanist-system-ui-controller", "accompanist-insets", "accompanist-insets-ui", "accompanist-placeholders"]
