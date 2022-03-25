@@ -19,11 +19,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import coil.compose.AsyncImage
+import stanislav.radchenko.worldcinema.ui.common.imagerequests.DefaultImageLoader
 
 class MainScreen : Screen {
     @Composable
@@ -67,7 +69,7 @@ class MainScreen : Screen {
         ) {
             Text(movie.title, style = typography.h4, textAlign = TextAlign.Center)
             AsyncImage(
-                model = movie.imageUrl,
+                model = DefaultImageLoader.load(movie.imageUrl, LocalContext.current),
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxSize(0.9f)
