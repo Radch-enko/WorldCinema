@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Surface
 import androidx.compose.runtime.SideEffect
@@ -12,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.navigator.Navigator
 import com.google.accompanist.insets.ProvideWindowInsets
+import com.google.accompanist.insets.navigationBarsWithImePadding
 import com.google.accompanist.insets.systemBarsPadding
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import org.koin.androidx.viewmodel.ext.android.getViewModel
@@ -41,14 +43,19 @@ class MainActivity : ComponentActivity() {
                 )
             }
 
-            WorldCinemaTheme {
-                ProvideWindowInsets {
+            ProvideWindowInsets {
+                WorldCinemaTheme {
                     Surface(
                         modifier = Modifier
-                            .fillMaxSize()
-                            .systemBarsPadding(), color = NightRider
+                            .fillMaxSize(), color = NightRider
                     ) {
-                        Navigator(SplashStartScreen())
+                        Box(
+                            modifier = Modifier
+                                .systemBarsPadding()
+                                .navigationBarsWithImePadding()
+                        ) {
+                            Navigator(SplashStartScreen())
+                        }
                     }
 
                     // Error dialog showing

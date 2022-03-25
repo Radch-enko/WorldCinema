@@ -1,11 +1,11 @@
 package stanislav.radchenko.worldcinema.screens.signin
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -22,7 +22,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import org.koin.androidx.compose.getViewModel
 import stanislav.radchenko.worldcinema.R
 import stanislav.radchenko.worldcinema.activity.main.MainActivityViewModel
-import stanislav.radchenko.worldcinema.screens.home.HomeScreen
+import stanislav.radchenko.worldcinema.screens.main.MainScreen
 import stanislav.radchenko.worldcinema.screens.registration.RegistrationScreen
 import stanislav.radchenko.worldcinema.ui.common.ButtonDefault
 import stanislav.radchenko.worldcinema.ui.common.Logo
@@ -32,7 +32,6 @@ import stanislav.radchenko.worldcinema.ui.common.TextFieldDefault
 class SignInScreen : Screen {
     @Composable
     override fun Content() {
-
         val viewModel = getScreenModel<SignInScreenViewModel>()
         val navigator = LocalNavigator.current
         val parentViewModel = getViewModel<MainActivityViewModel>()
@@ -47,7 +46,7 @@ class SignInScreen : Screen {
                         parentViewModel.showDialog(effect.message)
                     }
                     SignInScreenViewModel.Effect.OpenMainScreen -> {
-                        navigator?.replace(HomeScreen())
+                        navigator?.replace(MainScreen())
                     }
                 }
             }
@@ -59,47 +58,50 @@ class SignInScreen : Screen {
     @Composable
     fun SigninScreenInner(viewModel: SignInScreenViewModel) {
         var email by remember {
-            mutableStateOf("")
+            mutableStateOf("stas.radchenko.den@gmail.com")
         }
         var password by remember {
-            mutableStateOf("")
+            mutableStateOf("stas2003")
         }
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxSize()
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.SpaceEvenly,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Logo(
-                Modifier
-                    .padding(top = 50.dp)
-            )
+            item {
+                Logo()
+            }
+            item {
+                TextFieldDefault(value = email, onValueChange = {
+                    email = it
+                }, placeHolderText = stringResource(id = R.string.email))
 
-            TextFieldDefault(value = email, onValueChange = {
-                email = it
-            }, placeHolderText = stringResource(id = R.string.email))
+                Spacer(modifier = Modifier.height(16.dp))
 
-            Spacer(modifier = Modifier.height(16.dp))
-
-            TextFieldDefault(value = password, onValueChange = {
-                password = it
-            }, placeHolderText = stringResource(id = R.string.password))
-
-            ButtonDefault(onClick = {
-                viewModel.sendAction(
-                    SignInScreenViewModel.Action.Login(
-                        email,
-                        password
+                TextFieldDefault(value = password, onValueChange = {
+                    password = it
+                }, placeHolderText = stringResource(id = R.string.password))
+            }
+            item {
+                ButtonDefault(onClick = {
+                    viewModel.sendAction(
+                        SignInScreenViewModel.Action.Login(
+                            email,
+                            password
+                        )
                     )
-                )
-            }, text = stringResource(id = R.string.login))
-            Spacer(modifier = Modifier.height(16.dp))
+                }, text = stringResource(id = R.string.login))
+                Spacer(modifier = Modifier.height(16.dp))
 
-            OutlinedButtonDefault(
-                onClick = {
-                    viewModel.sendAction(SignInScreenViewModel.Action.ToRegistration)
-                },
-                text = stringResource(id = R.string.registration)
-            )
+                OutlinedButtonDefault(
+                    onClick = {
+                        viewModel.sendAction(SignInScreenViewModel.Action.ToRegistration)
+                    },
+                    text = stringResource(id = R.string.registration)
+                )
+            }
         }
     }
 }
