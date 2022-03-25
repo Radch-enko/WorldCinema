@@ -11,6 +11,7 @@ retrofit = "2.9.0"
 coroutines = "1.3.9"
 kotlinx-serialization-converter = "0.8.0"
 kotlinx-serialization = "1.3.0"
+coil = "2.0.0-rc02"
 
 [libraries]
 androidx-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "androidx-compose" }
@@ -39,8 +40,15 @@ coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", vers
 serialization-converter = { module = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter", version.ref = "kotlinx-serialization-converter" }
 kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 
+coil = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+
+accompanist-system-ui-controller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
+accompanist-insets = { module = "com.google.accompanist:accompanist-insets", version.ref = "accompanist" }
+accompanist-insets-ui = { module = "com.google.accompanist:accompanist-insets-ui", version.ref = "accompanist" }
+
 [bundles]
 compose = ["androidx-compose-ui", "androidx-compose-ui-tooling", "androidx-compose-foundation", "androidx-compose-material", "androidx-compose-animation", "androidx-compose-activity"]
 koin = ["koin-core", "koin-android", "koin-compose", "koin-navgraph"]
 voyager = ["voyager-navigator", "voyager-tab-navigator", "voyager-androidx", "voyager-transitions", "voyager-koin"]
 restapi = ["retrofit", "okhttp-client", "okhttp-logging", "coroutines", "kotlinx-serialization", "serialization-converter"]
+accompanist = ["accompanist-system-ui-controller", "accompanist-insets", "accompanist-insets-ui"]
