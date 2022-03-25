@@ -8,6 +8,7 @@ import stanislav.radchenko.worldcinema.network.model.LoginBody
 import stanislav.radchenko.worldcinema.network.model.body.RegistrationBody
 import stanislav.radchenko.worldcinema.network.model.response.AuthorizationResponse
 import stanislav.radchenko.worldcinema.network.model.response.MoviesResponseItem
+import stanislav.radchenko.worldcinema.network.model.response.UserResponse
 
 interface WorldCinemaService {
 
@@ -19,4 +20,7 @@ interface WorldCinemaService {
 
     @GET("/movies?filter=new")
     suspend fun getMovies(): List<MoviesResponseItem>
+
+    @GET("/user")
+    suspend fun getUser(): List<UserResponse>
 }

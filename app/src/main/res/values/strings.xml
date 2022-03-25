@@ -16,4 +16,5 @@
     <string name="selection_tab">Подборка</string>
     <string name="collection_tab">Коллекции</string>
     <string name="profile_tab">Профиль</string>
+    <string name="change_profile_data">Изменить</string>
 </resources>
