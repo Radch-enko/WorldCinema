@@ -1,13 +1,12 @@
 package stanislav.radchenko.worldcinema.ui.common
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import stanislav.radchenko.worldcinema.ui.theme.Mercury
 
@@ -15,17 +14,15 @@ import stanislav.radchenko.worldcinema.ui.theme.Mercury
 fun TextFieldDefault(
     value: String,
     onValueChange: (String) -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier.fillMaxWidth(),
     placeHolderText: String
 ) {
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
-        modifier = Modifier
-            .fillMaxWidth()
-            .composed { modifier },
+        modifier = modifier,
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            backgroundColor = Color.Transparent,
+            backgroundColor = MaterialTheme.colors.background,
             unfocusedBorderColor = Mercury,
             textColor = Mercury
         ),

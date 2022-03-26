@@ -23,7 +23,7 @@ class HomeScreenViewModel(private val moviesRepository: MoviesRepository) :
     private fun loadData() = coroutineScope.launch {
         mutableState.value = State.Loading
 
-        delay(5000)
+        delay(1000)
         when (val response = moviesRepository.getMovies()) {
             is ResultWrapper.GenericError -> {
                 if (response.error != null) {
