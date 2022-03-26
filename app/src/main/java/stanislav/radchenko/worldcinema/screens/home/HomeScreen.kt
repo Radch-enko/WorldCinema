@@ -1,5 +1,6 @@
 package stanislav.radchenko.worldcinema.screens.home
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -24,35 +25,46 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
+import cafe.adriel.voyager.navigator.LocalNavigator
 import coil.compose.AsyncImage
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.material.shimmer
+import stanislav.radchenko.worldcinema.screens.ScreenWithBottomNav
+import stanislav.radchenko.worldcinema.screens.chat.ChatScreen
 import stanislav.radchenko.worldcinema.ui.common.imagerequests.DefaultImageLoader
 
-class HomeScreen : Screen {
+class HomeScreen : Screen, ScreenWithBottomNav {
     @Composable
     override fun Content() {
         val viewModel = getScreenModel<HomeScreenViewModel>()
         val state by viewModel.state.collectAsState()
+        val navigator = LocalNavigator.current
 
         when (state) {
             is HomeScreenViewModel.State.Error -> TODO()
             HomeScreenViewModel.State.Loading -> SwipeContainer(
                 movies = listOf(
-                    MovieUI("Placeholder text", "")
+                    MovieUI("", "Placeholder text", "")
                 ),
+                onClick = {},
                 true
             )
             is HomeScreenViewModel.State.MovieCover -> SwipeContainer(
                 (state as HomeScreenViewModel.State.MovieCover).movies,
-                false
+                onClick = { movieId ->
+                    navigator?.push(ChatScreen(movieId))
+                }
             )
         }
     }
 
     @Composable
-    fun SwipeContainer(movies: List<MovieUI>, isPlaceholderVisible: Boolean) {
+    fun SwipeContainer(
+        movies: List<MovieUI>,
+        onClick: (String) -> Unit,
+        isPlaceholderVisible: Boolean = false
+    ) {
         val configuration = LocalConfiguration.current
         val screenWidth = configuration.screenWidthDp.dp
         LazyRow(
@@ -64,18 +76,27 @@ class HomeScreen : Screen {
                         .width(screenWidth)
                         .fillMaxHeight()
                 ) {
-                    MovieCover(movie, isPlaceholderVisible)
+                    MovieCover(movie, onClick = onClick, isPlaceholderVisible)
                 }
             }
         }
     }
 
     @Composable
-    fun MovieCover(movie: MovieUI, isPlaceholderVisible: Boolean) {
+    fun MovieCover(
+        movie: MovieUI,
+        onClick: (String) -> Unit,
+        isPlaceholderVisible: Boolean = false
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(vertical = 16.dp),
+                .padding(vertical = 16.dp)
+                .clickable {
+                    if (!isPlaceholderVisible) {
+                        onClick(movie.id)
+                    }
+                },
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(

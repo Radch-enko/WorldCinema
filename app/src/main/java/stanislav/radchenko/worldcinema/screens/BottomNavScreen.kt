@@ -1,0 +1,3 @@
+package stanislav.radchenko.worldcinema.screens
+
+interface ScreenWithBottomNav

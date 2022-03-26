@@ -1,5 +1,6 @@
 package stanislav.radchenko.worldcinema.activity.main
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import cafe.adriel.voyager.core.model.ScreenModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,6 +13,14 @@ class MainActivityViewModel(private val authorizationTokenUseCase: Authorization
 
     private val mutableDialogState = MutableStateFlow<DialogState>(DialogState("", false))
     val dialog = mutableDialogState.asStateFlow()
+
+    init {
+        showTokenForDebug()
+    }
+
+    private fun showTokenForDebug() {
+        Log.e("AUTHORIZATION TOKEN", authorizationTokenUseCase.getToken().toString())
+    }
 
     fun showDialog(message: String) {
         mutableDialogState.value = DialogState(message, true)

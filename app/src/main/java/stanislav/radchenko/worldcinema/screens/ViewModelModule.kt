@@ -2,6 +2,7 @@ package stanislav.radchenko.worldcinema.screens
 
 import org.koin.dsl.module
 import stanislav.radchenko.worldcinema.activity.main.MainActivityViewModel
+import stanislav.radchenko.worldcinema.screens.chat.ChatScreenViewModel
 import stanislav.radchenko.worldcinema.screens.home.HomeScreenViewModel
 import stanislav.radchenko.worldcinema.screens.profile.ProfileScreenViewModel
 import stanislav.radchenko.worldcinema.screens.registration.RegistrationScreenViewModel
@@ -15,4 +16,5 @@ val viewModelModule = module {
     single { SplashStartScreenViewModel(get()) }
     single { HomeScreenViewModel(get()) }
     single { ProfileScreenViewModel(get()) }
+    single { parameters -> ChatScreenViewModel(parameters.get(), get(), get()) }
 }

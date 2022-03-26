@@ -29,9 +29,10 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import coil.compose.AsyncImage
 import stanislav.radchenko.worldcinema.R
+import stanislav.radchenko.worldcinema.screens.ScreenWithBottomNav
 import stanislav.radchenko.worldcinema.ui.common.imagerequests.ProfileImageLoader
 
-class ProfileScreen : Screen {
+class ProfileScreen : Screen, ScreenWithBottomNav {
 
     @Composable
     override fun Content() {
