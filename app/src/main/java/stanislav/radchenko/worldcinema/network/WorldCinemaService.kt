@@ -1,9 +1,12 @@
 package stanislav.radchenko.worldcinema.network
 
+import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Path
 import stanislav.radchenko.worldcinema.network.model.ChatMessagesResponse
 import stanislav.radchenko.worldcinema.network.model.LoginBody
@@ -43,4 +46,10 @@ interface WorldCinemaService {
         @Path("chatId") chatId: String,
         @Body body: SendMessageBody
     ): ChatMessagesResponse
+
+    @Multipart
+    @POST("/user/avatar")
+    suspend fun loadAvatar(
+        @Part image: MultipartBody.Part
+    ): List<UserResponse>
 }

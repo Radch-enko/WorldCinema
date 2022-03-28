@@ -15,6 +15,6 @@ val viewModelModule = module {
     single { SignInScreenViewModel(get(), get()) }
     single { SplashStartScreenViewModel(get()) }
     single { HomeScreenViewModel(get()) }
-    single { ProfileScreenViewModel(get()) }
+    single { ProfileScreenViewModel(get(), get()) }
     single { parameters -> ChatScreenViewModel(parameters.get(), get(), get()) }
 }

@@ -1,5 +1,10 @@
 package stanislav.radchenko.worldcinema.network
 
+import android.content.Context
+import android.database.Cursor
+import android.net.Uri
+import android.provider.DocumentsContract
+import android.provider.MediaStore
 import android.util.Log
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -8,6 +13,7 @@ import kotlinx.serialization.json.Json
 import retrofit2.HttpException
 import java.io.BufferedInputStream
 import java.io.IOException
+
 
 suspend fun <T> safeApiCall(
     dispatcher: CoroutineDispatcher,
@@ -18,7 +24,10 @@ suspend fun <T> safeApiCall(
             ResultWrapper.Success(apiCall.invoke())
         } catch (throwable: Throwable) {
             when (throwable) {
-                is IOException -> ResultWrapper.NetworkError
+                is IOException -> {
+                    throwable.printStackTrace()
+                    ResultWrapper.NetworkError
+                }
                 is HttpException -> {
                     val code = throwable.code()
                     val errorResponse = convertErrorBodyFromString(throwable)
@@ -67,4 +76,28 @@ private fun convertErrorBodyFromString(throwable: HttpException): String? {
     } catch (exception: Exception) {
         null
     }
+}
+
+fun getRealPathFromURI_API19(context: Context, uri: Uri?): String {
+    var filePath = ""
+    val wholeID = DocumentsContract.getDocumentId(uri)
+
+    // Split at colon, use second item in the array
+    val id = wholeID.split(":").toTypedArray()[1]
+    val column = arrayOf(MediaStore.Images.Media.DATA)
+
+    // where id is equal to
+    val sel = MediaStore.Images.Media._ID + "=?"
+    val cursor: Cursor? = context.contentResolver.query(
+        MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+        column, sel, arrayOf(id), null
+    )
+    if (cursor != null) {
+        val columnIndex: Int = cursor.getColumnIndex(column[0])
+        if (cursor.moveToFirst()) {
+            filePath = cursor.getString(columnIndex)
+        }
+    }
+    cursor?.close()
+    return filePath
 }

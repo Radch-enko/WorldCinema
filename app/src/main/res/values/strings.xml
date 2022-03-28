@@ -18,4 +18,8 @@
     <string name="profile_tab">Профиль</string>
     <string name="change_profile_data">Изменить</string>
     <string name="write_message">Напишите сообщение</string>
+    <string name="discussion">Обсуждения</string>
+    <string name="history">История</string>
+    <string name="settings">Настройки</string>
+    <string name="logout">Выход</string>
 </resources>

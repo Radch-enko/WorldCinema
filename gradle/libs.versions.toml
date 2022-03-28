@@ -20,6 +20,7 @@ androidx-compose-foundation = { module = "androidx.compose.foundation:foundation
 androidx-compose-material = { module = "androidx.compose.material:material", version.ref = "androidx-compose" }
 androidx-compose-animation = { module = "androidx.compose.animation:animation", version.ref = "androidx-compose" }
 androidx-compose-activity = { module = "androidx.activity:activity-compose", version.ref = "androidx-compose-activity" }
+androidx-compose-icons = { module = "androidx.compose.material:material-icons-extended", version.ref = "androidx-compose" }
 
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
@@ -48,7 +49,7 @@ accompanist-insets-ui = { module = "com.google.accompanist:accompanist-insets-ui
 accompanist-placeholders = { module = "com.google.accompanist:accompanist-placeholder-material", version.ref = "accompanist" }
 
 [bundles]
-compose = ["androidx-compose-ui", "androidx-compose-ui-tooling", "androidx-compose-foundation", "androidx-compose-material", "androidx-compose-animation", "androidx-compose-activity"]
+compose = ["androidx-compose-ui", "androidx-compose-ui-tooling", "androidx-compose-foundation", "androidx-compose-material", "androidx-compose-animation", "androidx-compose-activity", "androidx-compose-icons"]
 koin = ["koin-core", "koin-android", "koin-compose", "koin-navgraph"]
 voyager = ["voyager-navigator", "voyager-tab-navigator", "voyager-androidx", "voyager-transitions", "voyager-koin"]
 restapi = ["retrofit", "okhttp-client", "okhttp-logging", "coroutines", "kotlinx-serialization", "serialization-converter"]

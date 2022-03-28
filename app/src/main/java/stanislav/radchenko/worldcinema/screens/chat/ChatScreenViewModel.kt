@@ -60,7 +60,7 @@ class ChatScreenViewModel(
         mutableState.value = State.Loading
 
         while (true) {
-            delay(3000)
+            delay(4000)
             loadMessages()
         }
     }
