@@ -22,4 +22,11 @@
     <string name="history">История</string>
     <string name="settings">Настройки</string>
     <string name="logout">Выход</string>
+    <string name="favourite">Избранное</string>
+    <string name="sometime">Когда нибудь</string>
+    <string name="to_road">В поездку</string>
+    <string name="create_collection">Создать коллекцию</string>
+    <string name="collection_name">Название</string>
+    <string name="select_icon">Выбрать иконку</string>
+    <string name="save">Сохранить</string>
 </resources>
