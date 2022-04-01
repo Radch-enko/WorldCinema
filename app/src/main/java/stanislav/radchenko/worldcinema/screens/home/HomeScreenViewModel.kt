@@ -1,13 +1,14 @@
-package stanislav.radchenko.worldcinema.screens.main
+package stanislav.radchenko.worldcinema.screens.home
 
 import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.coroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import stanislav.radchenko.worldcinema.domain.repository.MoviesRepository
 import stanislav.radchenko.worldcinema.network.ResultWrapper
 
-class MainScreenViewModel(private val moviesRepository: MoviesRepository) :
-    StateScreenModel<MainScreenViewModel.State>(State.Loading) {
+class HomeScreenViewModel(private val moviesRepository: MoviesRepository) :
+    StateScreenModel<HomeScreenViewModel.State>(State.Loading) {
 
     sealed class State {
         object Loading : State()
@@ -22,6 +23,7 @@ class MainScreenViewModel(private val moviesRepository: MoviesRepository) :
     private fun loadData() = coroutineScope.launch {
         mutableState.value = State.Loading
 
+        delay(1000)
         when (val response = moviesRepository.getMovies()) {
             is ResultWrapper.GenericError -> {
                 if (response.error != null) {

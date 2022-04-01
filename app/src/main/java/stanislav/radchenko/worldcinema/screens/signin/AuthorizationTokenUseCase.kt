@@ -20,4 +20,9 @@ class AuthorizationTokenUseCase(private val context: Context) {
     fun getToken(): Int {
         return sharedPreferences.getInt(token, 0)
     }
+
+    fun deleteToken() {
+        editor.putInt(token, 0)
+        editor.commit()
+    }
 }

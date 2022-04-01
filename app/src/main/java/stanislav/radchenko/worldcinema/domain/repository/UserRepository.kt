@@ -5,4 +5,5 @@ import stanislav.radchenko.worldcinema.network.model.response.UserResponse
 
 interface UserRepository {
     suspend fun getUser(): ResultWrapper<UserResponse>
+    suspend fun loadAvatar(url: String): ResultWrapper<List<UserResponse>>
 }

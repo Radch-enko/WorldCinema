@@ -1,6 +1,7 @@
 package stanislav.radchenko.worldcinema.navigation
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
@@ -11,10 +12,14 @@ import stanislav.radchenko.worldcinema.ui.theme.CodGray
 
 @Composable
 fun BottomNavigation() {
-    TabNavigator(HomeTab) {
+    TabNavigator(HomeTab) { tabNavigator ->
         Scaffold(
-            content = { padding ->
-                Box(modifier = Modifier.padding(padding)) {
+            content = { innerPadding ->
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(innerPadding)
+                ) {
                     CurrentTab()
                 }
             },
