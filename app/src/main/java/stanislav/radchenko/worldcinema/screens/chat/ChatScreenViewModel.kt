@@ -2,12 +2,12 @@ package stanislav.radchenko.worldcinema.screens.chat
 
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.coroutineScope
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import stanislav.radchenko.worldcinema.domain.repository.ChatRepository
 import stanislav.radchenko.worldcinema.domain.repository.UserRepository
@@ -18,7 +18,7 @@ import stanislav.radchenko.worldcinema.screens.profile.toUI
 class ChatScreenViewModel(
     private val id: String,
     private val repository: ChatRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
 ) : ScreenModel {
 
     sealed class State {
@@ -31,26 +31,29 @@ class ChatScreenViewModel(
         class SendMessage(val message: String) : Action()
     }
 
-    sealed class Effect {
-        object ScrollToLastItem : Effect()
-    }
-
-    private var chatId: String = id
-    private var title: String? = null
-
     private val mutableState = MutableStateFlow<State>(State.Loading)
     val state = mutableState.asStateFlow()
 
-    private val mutableEffect = MutableSharedFlow<Effect>()
-    val effect = mutableEffect.asSharedFlow()
-
-    private var userProfile: UserUI? = null
-
     init {
-        coroutineScope.launch {
-            loadProfile()
-            loadChatInfo()
-            loadMessages()
+        initialLoadData()
+    }
+
+    private fun initialLoadData() = coroutineScope.launch {
+        mutableState.value = State.Loading
+
+        while (true) {
+            loadData()
+            delay(500)
+        }
+    }
+
+    private fun loadData() = coroutineScope.launch(CoroutineExceptionHandler { _, _ ->
+        setErrorState("Что-то пошло не так, попробуйте позже")
+    }) {
+        repository.getUserProfile().combine(repository.getChat(id)) { user, chat ->
+            State.Chat(ChatUI(chat.chatId, chat.name, listOf()), user.toUI())
+        }.collectLatest { chat: State.Chat ->
+            loadMessages(chat)
         }
     }
 
@@ -64,54 +67,34 @@ class ChatScreenViewModel(
 
     private fun sendMessage(message: String) = coroutineScope.launch {
         when (val response =
-            repository.sendMessage(chatId, message)) {
+            repository.sendMessage((state.value as State.Chat).chatUI.chatId, message)) {
             is ResultWrapper.GenericError -> response.error?.message?.let { setErrorState(it) }
             ResultWrapper.NetworkError -> setErrorState(response.toString())
             is ResultWrapper.Success -> {
-                // TODO display your new message
-                loadMessages()
+                loadData()
             }
         }
     }
 
-    private suspend fun loadProfile() {
-        when (val userResponse = userRepository.getUser()) {
-            is ResultWrapper.GenericError -> userResponse.error?.message?.let { setErrorState(it) }
-            ResultWrapper.NetworkError -> setErrorState(userResponse.toString())
-            is ResultWrapper.Success -> userProfile = userResponse.value.toUI()
-        }
-    }
+    private fun loadMessages(chat: State.Chat) = coroutineScope.launch {
+        val chatState = chat.chatUI
 
-    private fun loadChatInfo() = coroutineScope.launch {
-        when (val response = repository.getChat(id)) {
-            is ResultWrapper.GenericError -> response.error?.message?.let { setErrorState(it) }
-            ResultWrapper.NetworkError -> setErrorState(response.toString())
+        when (val result = repository.getMessages(chatState.chatId)) {
+            is ResultWrapper.GenericError -> {
+                setErrorState("Произошла ошибка, попробуйте позже")
+            }
+            ResultWrapper.NetworkError -> result.toString()
             is ResultWrapper.Success -> {
-                chatId = response.value.chatId
-                title = response.value.name
+                mutableState.value = State.Chat(
+                    ChatUI(
+                        chatId = chatState.chatId,
+                        title = chatState.title,
+                        messages = result.value.toUI()
+                    ),
+                    myProfile = chat.myProfile
+                )
             }
         }
-    }
-
-    private suspend fun loadMessages() {
-        mutableState.value = State.Loading
-        val messagesResponse = chatId.let { repository.getMessages(it) }.distinctUntilChanged()
-            .collectLatest { result ->
-                when (result) {
-                    is ResultWrapper.GenericError -> result.error?.message?.let { setErrorState(it) }
-                    ResultWrapper.NetworkError -> result.toString()
-                    is ResultWrapper.Success -> {
-                        mutableState.value = State.Chat(
-                            ChatUI(
-                                chatId = chatId,
-                                title = title!!,
-                                messages = result.value.toUI()
-                            ),
-                            myProfile = userProfile!!
-                        )
-                    }
-                }
-            }
     }
 
     private fun setErrorState(message: String) {

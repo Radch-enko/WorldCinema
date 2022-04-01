@@ -1,7 +1,7 @@
 package stanislav.radchenko.worldcinema.domain.repository
 
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import stanislav.radchenko.worldcinema.network.ResultWrapper
 import stanislav.radchenko.worldcinema.network.WorldCinemaService
 import stanislav.radchenko.worldcinema.network.model.ChatMessagesResponse
@@ -14,21 +14,16 @@ class ChatRepositoryImpl(
     private val dispatcher: CoroutineDispatcher
 ) : ChatRepository {
 
-    override suspend fun getChat(movieId: String): ResultWrapper<ChatResponse> {
+    override suspend fun getChat(movieId: String) = flowOf(service.getChat(movieId)[0])
+
+    override suspend fun getMessages(chatId: String): ResultWrapper<List<ChatMessagesResponse>> {
         return safeApiCall(dispatcher, apiCall = {
-            service.getChat(movieId)[0]
+            service.getChatMessages(chatId)
         })
     }
 
-    override suspend fun getMessages(chatId: String) = flow {
-        while (true) {
-            emit(safeApiCall(dispatcher, apiCall = {
-                service.getChatMessages(chatId)
-            }))
-            kotlinx.coroutines.delay(500)
-        }
-    }
 
+    override suspend fun getUserProfile() = flowOf(service.getUser()[0])
 
     override suspend fun sendMessage(
         chatId: String,
