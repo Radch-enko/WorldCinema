@@ -9,7 +9,7 @@ object ProfileImageLoader {
 
     fun load(url: String, context: Context): ImageRequest {
         return ImageRequest.Builder(context)
-            .data("${BuildConfig.BASE_URL}/up/images/$url")
+            .data("${BuildConfig.BASE_URL}/up/images/${url.replaceAfter(".", "png")}")
             .crossfade(true)
             .placeholder(R.drawable.no_image_profile_placeholder)
             .error(R.drawable.no_image_profile_placeholder)

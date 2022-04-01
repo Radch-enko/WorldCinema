@@ -25,6 +25,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -95,6 +96,10 @@ class ChatScreen(val id: String) : Screen {
         val scrollState = rememberLazyListState()
 
         val messages = state.chatUI.messages
+
+        LaunchedEffect(scrollState) {
+            scrollState.scrollToItem(messages.size - 1)
+        }
 
         LazyColumn(
             content = {
