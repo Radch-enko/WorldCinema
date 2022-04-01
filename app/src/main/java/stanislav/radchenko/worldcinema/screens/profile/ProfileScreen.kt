@@ -90,7 +90,7 @@ class ProfileScreen : Screen, ScreenWithBottomNav {
 
     @Composable
     fun ProfileLinks(onLogOutClick: () -> Unit) {
-        val navigator = LocalNavigator.current
+        val navigator = LocalNavigator.current?.parent?.parent
         LazyColumn(content = {
             item {
                 ProfileLinkItem(
