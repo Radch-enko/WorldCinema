@@ -51,7 +51,7 @@ class CollectionScreen : Screen {
 
     @Composable
     fun CollectionScreenInner() {
-        val navigator = LocalNavigator.current
+        val navigator = LocalNavigator.current?.parent?.parent
         Scaffold(topBar = {
             Row(
                 modifier = Modifier

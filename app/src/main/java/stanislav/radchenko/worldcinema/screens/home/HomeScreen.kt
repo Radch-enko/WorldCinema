@@ -40,7 +40,7 @@ class HomeScreen : Screen, ScreenWithBottomNav {
     override fun Content() {
         val viewModel = getScreenModel<HomeScreenViewModel>()
         val state by viewModel.state.collectAsState()
-        val navigator = LocalNavigator.current
+        val navigator = LocalNavigator.current?.parent?.parent
 
         when (state) {
             is HomeScreenViewModel.State.Error -> ErrorScreenState(message = (state as HomeScreenViewModel.State.Error).message)
