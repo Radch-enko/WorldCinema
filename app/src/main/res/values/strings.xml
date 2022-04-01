@@ -29,4 +29,5 @@
     <string name="collection_name">Название</string>
     <string name="select_icon">Выбрать иконку</string>
     <string name="save">Сохранить</string>
+    <string name="chat_list_messenger_example">Иван:</string>
 </resources>
