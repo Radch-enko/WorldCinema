@@ -32,7 +32,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
 import stanislav.radchenko.worldcinema.R
+import stanislav.radchenko.worldcinema.screens.createcollection.CreateCollectionScreen
 
 class CollectionScreen : Screen {
     @Composable
@@ -49,6 +51,7 @@ class CollectionScreen : Screen {
 
     @Composable
     fun CollectionScreenInner() {
+        val navigator = LocalNavigator.current
         Scaffold(topBar = {
             Row(
                 modifier = Modifier
@@ -56,7 +59,7 @@ class CollectionScreen : Screen {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(text = stringResource(id = R.string.collection_tab), style = typography.h4)
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = { navigator?.push(CreateCollectionScreen()) }) {
                     Icon(Icons.Default.Add, contentDescription = null)
                 }
             }
