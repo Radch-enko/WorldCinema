@@ -25,7 +25,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,8 +37,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.koin.getScreenModel
 import coil.compose.AsyncImage
-import org.koin.androidx.compose.viewModel
 import org.koin.core.parameter.parametersOf
 import stanislav.radchenko.worldcinema.R
 import stanislav.radchenko.worldcinema.ui.common.ErrorScreenState
@@ -54,7 +53,7 @@ import stanislav.radchenko.worldcinema.ui.theme.Trinidad
 class ChatScreen(val id: String) : Screen {
     @Composable
     override fun Content() {
-        val viewModel: ChatScreenViewModel by viewModel { parametersOf(id) }
+        val viewModel: ChatScreenViewModel = getScreenModel { parametersOf(id) }
 
         val state by viewModel.state.collectAsState()
         ChatScreenInner(
@@ -94,15 +93,13 @@ class ChatScreen(val id: String) : Screen {
     @Composable
     fun MessagesList(state: ChatScreenViewModel.State.Chat) {
         val scrollState = rememberLazyListState()
-        val messages = state.chatUI.messages
 
-        LaunchedEffect(scrollState) {
-            scrollState.animateScrollToItem(messages.size - 1)
-        }
+        val messages = state.chatUI.messages
 
         LazyColumn(
             content = {
                 itemsIndexed(messages) { index, message ->
+
                     val isAvatarVisible = if (index != messages.size - 1) {
                         messages[index].name != messages[index + 1].name
                     } else {
@@ -218,6 +215,7 @@ class ChatScreen(val id: String) : Screen {
             Spacer(modifier = Modifier.width(16.dp))
             IconButton(onClick = {
                 onSendClick(messageText)
+                messageText = ""
             }) {
                 Surface(color = Trinidad, shape = CircleShape) {
                     Icon(Icons.Default.KeyboardArrowUp, contentDescription = null)

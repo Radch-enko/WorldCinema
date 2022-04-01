@@ -37,6 +37,7 @@ import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import stanislav.radchenko.worldcinema.R
 import stanislav.radchenko.worldcinema.screens.ScreenWithBottomNav
+import stanislav.radchenko.worldcinema.screens.chatlist.ChatListScreen
 import stanislav.radchenko.worldcinema.screens.splash.SplashStartScreenViewModel
 import stanislav.radchenko.worldcinema.ui.common.ErrorScreenState
 import stanislav.radchenko.worldcinema.ui.common.LoadingScreenState
@@ -89,12 +90,15 @@ class ProfileScreen : Screen, ScreenWithBottomNav {
 
     @Composable
     fun ProfileLinks(onLogOutClick: () -> Unit) {
+        val navigator = LocalNavigator.current
         LazyColumn(content = {
             item {
                 ProfileLinkItem(
                     Icons.Filled.Forum,
                     stringResource(id = R.string.discussion),
-                    onClick = { })
+                    onClick = {
+                        navigator?.push(ChatListScreen())
+                    })
             }
             item {
                 ProfileLinkItem(

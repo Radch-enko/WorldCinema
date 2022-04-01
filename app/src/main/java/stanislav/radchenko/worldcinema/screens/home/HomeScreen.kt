@@ -32,6 +32,7 @@ import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.material.shimmer
 import stanislav.radchenko.worldcinema.screens.ScreenWithBottomNav
 import stanislav.radchenko.worldcinema.screens.chat.ChatScreen
+import stanislav.radchenko.worldcinema.ui.common.ErrorScreenState
 import stanislav.radchenko.worldcinema.ui.common.imagerequests.DefaultImageLoader
 
 class HomeScreen : Screen, ScreenWithBottomNav {
@@ -42,7 +43,7 @@ class HomeScreen : Screen, ScreenWithBottomNav {
         val navigator = LocalNavigator.current
 
         when (state) {
-            is HomeScreenViewModel.State.Error -> TODO()
+            is HomeScreenViewModel.State.Error -> ErrorScreenState(message = (state as HomeScreenViewModel.State.Error).message)
             HomeScreenViewModel.State.Loading -> SwipeContainer(
                 movies = listOf(
                     MovieUI("", "Placeholder text", "")

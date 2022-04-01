@@ -35,7 +35,7 @@ suspend fun <T> safeApiCall(
                 }
                 else -> {
                     Log.e("SafeApiCall", throwable.printStackTrace().toString())
-                    ResultWrapper.GenericError()
+                    ResultWrapper.GenericError(error = ErrorResponse("Нет данных, попробуйте позже"))
                 }
             }
         }
