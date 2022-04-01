@@ -1,14 +1,13 @@
 package stanislav.radchenko.worldcinema.screens.chat
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.coroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import stanislav.radchenko.worldcinema.domain.repository.ChatRepository
 import stanislav.radchenko.worldcinema.domain.repository.UserRepository
@@ -20,8 +19,7 @@ class ChatScreenViewModel(
     private val id: String,
     private val repository: ChatRepository,
     private val userRepository: UserRepository
-) :
-    ViewModel(), ScreenModel {
+) : ScreenModel {
 
     sealed class State {
         object Loading : State()
@@ -37,7 +35,7 @@ class ChatScreenViewModel(
         object ScrollToLastItem : Effect()
     }
 
-    private var chatId: String? = null
+    private var chatId: String = id
     private var title: String? = null
 
     private val mutableState = MutableStateFlow<State>(State.Loading)
@@ -52,15 +50,6 @@ class ChatScreenViewModel(
         coroutineScope.launch {
             loadProfile()
             loadChatInfo()
-            loadingMessages()
-        }
-    }
-
-    private suspend fun loadingMessages() {
-        mutableState.value = State.Loading
-
-        while (true) {
-            delay(4000)
             loadMessages()
         }
     }
@@ -75,7 +64,7 @@ class ChatScreenViewModel(
 
     private fun sendMessage(message: String) = coroutineScope.launch {
         when (val response =
-            repository.sendMessage((state.value as State.Chat).chatUI.chatId, message)) {
+            repository.sendMessage(chatId, message)) {
             is ResultWrapper.GenericError -> response.error?.message?.let { setErrorState(it) }
             ResultWrapper.NetworkError -> setErrorState(response.toString())
             is ResultWrapper.Success -> {
@@ -93,7 +82,7 @@ class ChatScreenViewModel(
         }
     }
 
-    private fun loadChatInfo() = viewModelScope.launch {
+    private fun loadChatInfo() = coroutineScope.launch {
         when (val response = repository.getChat(id)) {
             is ResultWrapper.GenericError -> response.error?.message?.let { setErrorState(it) }
             ResultWrapper.NetworkError -> setErrorState(response.toString())
@@ -105,20 +94,24 @@ class ChatScreenViewModel(
     }
 
     private suspend fun loadMessages() {
-        when (val messagesResponse = chatId?.let { repository.getMessages(it) }) {
-            is ResultWrapper.GenericError -> messagesResponse.error?.message?.let { setErrorState(it) }
-            ResultWrapper.NetworkError -> messagesResponse.toString()
-            is ResultWrapper.Success -> {
-                mutableState.value = State.Chat(
-                    ChatUI(
-                        chatId = chatId!!,
-                        title = title!!,
-                        messages = messagesResponse.value.toUI()
-                    ),
-                    myProfile = userProfile!!
-                )
+        mutableState.value = State.Loading
+        val messagesResponse = chatId.let { repository.getMessages(it) }.distinctUntilChanged()
+            .collectLatest { result ->
+                when (result) {
+                    is ResultWrapper.GenericError -> result.error?.message?.let { setErrorState(it) }
+                    ResultWrapper.NetworkError -> result.toString()
+                    is ResultWrapper.Success -> {
+                        mutableState.value = State.Chat(
+                            ChatUI(
+                                chatId = chatId,
+                                title = title!!,
+                                messages = result.value.toUI()
+                            ),
+                            myProfile = userProfile!!
+                        )
+                    }
+                }
             }
-        }
     }
 
     private fun setErrorState(message: String) {

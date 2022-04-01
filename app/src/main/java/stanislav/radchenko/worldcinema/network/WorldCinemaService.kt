@@ -52,4 +52,7 @@ interface WorldCinemaService {
     suspend fun loadAvatar(
         @Part image: MultipartBody.Part
     ): List<UserResponse>
+
+    @GET("/user/chats")
+    suspend fun getMyChats(): List<ChatResponse>
 }
