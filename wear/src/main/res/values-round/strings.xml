@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">WorldCinema</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="registration">Registration</string>
+    <string name="already_have_account">I already have account</string>
+    <string name="name">Name</string>
+    <string name="surname">Surname</string>
+    <string name="thirdname">Thirdname</string>
+    <string name="password_again">Password again</string>
+    <string name="ok">OK</string>
+    <string name="unknown_error">Something went wrong, please try again later</string>
+    <string name="successfully">Successfully</string>
+    <string name="home_tab">Главная</string>
+    <string name="selection_tab">Подборка</string>
+    <string name="collection_tab">Коллекции</string>
+    <string name="profile_tab">Профиль</string>
+    <string name="change_profile_data">Изменить</string>
+    <string name="write_message">Напишите сообщение</string>
+    <string name="discussion">Обсуждения</string>
+    <string name="history">История</string>
+    <string name="settings">Настройки</string>
+    <string name="logout">Выход</string>
+    <string name="favourite">Избранное</string>
+    <string name="sometime">Когда нибудь</string>
+    <string name="to_road">В поездку</string>
+    <string name="create_collection">Создать коллекцию</string>
+    <string name="collection_name">Название</string>
+    <string name="select_icon">Выбрать иконку</string>
+    <string name="save">Сохранить</string>
+    <string name="chat_list_messenger_example">Иван:</string>
+</resources>
