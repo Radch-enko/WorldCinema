@@ -1,0 +1,59 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id "kotlinx-serialization"
+}
+
+android {
+    compileSdk 31
+
+    defaultConfig {
+        applicationId "stanislav.radchenko.worldcinema.wear"
+        minSdk 30
+        targetSdk 31
+        versionCode 1
+        versionName "1.0"
+
+
+        buildConfigField(
+                "String",
+                "BASE_URL",
+                "\"http://cinema.areas.su\""
+        )
+
+    }
+
+    buildTypes {
+        release {
+            isDefault = true
+            minifyEnabled true
+            shrinkResources true
+            signingConfig signingConfigs.debug
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+        }
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion libs.versions.wear.compose.get()
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_11.toString()
+        useIR = true
+    }
+    buildFeatures {
+        compose true
+    }
+}
+
+dependencies {
+    implementation(libs.bundles.compose)
+    implementation(libs.bundles.koin)
+    implementation(libs.bundles.voyager)
+    implementation(libs.bundles.restapi)
+    implementation(libs.bundles.accompanist)
+    implementation(libs.coil)
+    implementation(libs.bundles.wear)
+}

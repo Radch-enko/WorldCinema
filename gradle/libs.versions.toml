@@ -12,6 +12,10 @@ coroutines = "1.3.9"
 kotlinx-serialization-converter = "0.8.0"
 kotlinx-serialization = "1.3.0"
 coil = "2.0.0-rc02"
+androidx-wear-compose = "1.0.0-alpha17"
+androix-wear = "1.1.0"
+play-services-wearable = "17.1.0"
+wear-compose = "1.2.0-alpha04"
 
 [libraries]
 androidx-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "androidx-compose" }
@@ -48,9 +52,16 @@ accompanist-insets = { module = "com.google.accompanist:accompanist-insets", ver
 accompanist-insets-ui = { module = "com.google.accompanist:accompanist-insets-ui", version.ref = "accompanist" }
 accompanist-placeholders = { module = "com.google.accompanist:accompanist-placeholder-material", version.ref = "accompanist" }
 
+
+wear-compose-foundation = { module = "androidx.wear.compose:compose-foundation", version.ref = "androidx-wear-compose" }
+wear-compose-material = { module = "androidx.wear.compose:compose-material", version.ref = "androidx-wear-compose" }
+androidx-wear-wear = { module = "androidx.wear:wear", version.ref = "androix-wear" }
+wearable = { module = "com.google.android.gms:play-services-wearable", version.ref = "play-services-wearable" }
+
 [bundles]
 compose = ["androidx-compose-ui", "androidx-compose-ui-tooling", "androidx-compose-foundation", "androidx-compose-material", "androidx-compose-animation", "androidx-compose-activity", "androidx-compose-icons"]
 koin = ["koin-core", "koin-android", "koin-compose", "koin-navgraph"]
 voyager = ["voyager-navigator", "voyager-tab-navigator", "voyager-androidx", "voyager-transitions", "voyager-koin"]
 restapi = ["retrofit", "okhttp-client", "okhttp-logging", "coroutines", "kotlinx-serialization", "serialization-converter"]
 accompanist = ["accompanist-system-ui-controller", "accompanist-insets", "accompanist-insets-ui", "accompanist-placeholders"]
+wear = ["wear-compose-foundation", "wear-compose-material", "androidx-wear-wear", "wearable"]
